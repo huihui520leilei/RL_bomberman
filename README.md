@@ -134,10 +134,11 @@ python main.py play --my-agent random_agent
 python main.py play --agents peaceful_agent
 ```
 ******************************************************************************
+The code inside Folder: "agent_code" 
 ## Task 1 (Collect all coins without crates and opponents)(Q-table and Sarsa Method)（finished）
 ### 1. Create your own agent
 
-Copy "agent_code/tpl_agent" rename as "my_agent"
+Copy "agent_code/tpl_agent" rename as "my_agent1Q"
 
 ### 2. Change the environment
 
@@ -148,18 +149,24 @@ Copy "agent_code/tpl_agent" rename as "my_agent"
 ### 3. Training model based on rule_based_agent 
 
 1). If training run just one times, input in "CMD.exe Prompt":
-
 ```console
-python main.py play --agents my_agent --train 1
+python main.py play --agents my_agent1Q --train 1
 ```
 2). If the number of training runs depends on the "episodes" in "train_my_agent.py", input in "CMD.exe Prompt":
 ```console
 python train_my_agent.py
 ```
+(1. Copy folder "my_agent1Q" under "/bomberman_rl/agent_code" 
+2. Copy "train_my_agent.py" under "/bomberman_rl")
 ### 4. Running Q Learning model for action
 1). Input in "CMD.exe Prompt":
 ```console
 python main.py play --agents my_agent1Q
+```
+## Folder: my_agent1Sarsa (use on-policy SARSA)
+Running code:
+```console
+python main.py play --agents my_agent1Sarsa
 ```
 ******************************************************************************
 ## Task 2 (Collect all coins and bomb crates without opponents)
@@ -167,14 +174,15 @@ python main.py play --agents my_agent1Q
 Deep_Q_Network
 [Maze Using Reinforcement Learning(Q_learning, Sarsa, DQN)](https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow/tree/master/contents)
 
-## 1. Neural Network (folder: my_agent2)
-## (Training file: ......)
-2) Finish DQN Framework in "callbacks.py" and "train.py"
-
+### 1. Deep Q Network (folder: my_agent2DQN)
+1) Finish DQN Framework in "callbacks.py" and "train.py"
+2) 1 hidden layer with 64 nodes
+3) 2 hidden layer with 32 nodes for everyone
 Running code:
 ```console
-python main.py play --agents my_agent2 --train 1
+python main.py play --agents my_agent2DQN --train 1
 ```
-## 2. New state based on Q-table (folder: my_agent2Q_2)
-1) works on task 1 does't work on task 2
+### 2. New state based on Q-table (folder: my_agent2Q_2)
+1) works on task 1 does't work on task 2 (the model saved in 'my_agent2Q' is task 1 table trained based on the new state)
+    
 
