@@ -109,21 +109,21 @@ python main.py play --agents user_agent
 
 ## Clone repositories
 ```console
-1). git clone git@github.com:holger-ziti/ML_project.git
-2). git clone git@github.com:ukoethe/bomberman_rl.git
-3). Move them all in the folder “mlclass_project”
+1) git clone git@github.com:holger-ziti/ML_project.git
+2) git clone git@github.com:ukoethe/bomberman_rl.git
+3) Move them all in the folder “mlclass_project”
 ```
 
 
 ## Play
 1. input command in "CMD.exe Prompt": activate, run rule_based_agent example, deactivate
 ```console
-1). conda activate ml_project
-2). cd desktop
+1) conda activate ml_project
+2) cd desktop
     cd mlclass_project
     cd bomberman_rl
-3). python main.py play
-4). conda deactivate
+3) python main.py play
+4) conda deactivate
 ```
 2. Play one defined agent (in bomberman_rl/agent_code) with three rule_based_agent
 ```console
@@ -159,7 +159,7 @@ python train_my_agent.py
 ### 4. Running Q Learning model for action
 1). Input in "CMD.exe Prompt":
 ```console
-python main.py play --agents my_agent
+python main.py play --agents my_agent1Q
 ```
 ******************************************************************************
 ## Task 2 (Collect all coins and bomb crates without opponents)
