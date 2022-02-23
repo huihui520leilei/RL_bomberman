@@ -163,7 +163,7 @@ python train_my_agent.py
 ```console
 python main.py play --agents my_agent1Q
 ```
-## Folder: my_agent1Sarsa (use on-policy SARSA)
+## 5. Running Sarsa model for action
 Running code:
 ```console
 python main.py play --agents my_agent1Sarsa
