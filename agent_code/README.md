@@ -1,20 +1,20 @@
 # Task 1: Only Coins
-## folder: my_agent1Q (use off-policy Q-table)
+## Folder: my_agent1Q (use off-policy Q-table)
 Running code:
 ```console
 python main.py play --agents my_agent1Q
 ```
-## folder: my_agent1Sarsa (use on-policy SARSA)
+## Folder: my_agent1Sarsa (use on-policy SARSA)
 Running code:
 ```console
 python main.py play --agents my_agent1Sarsa
 ```
 ## training file: train_my_agent.py
-1. Copy folder "my_agent" under "/bomberman_rl/agent_code" 
+1. Copy folder "my_agent1Q" under "/bomberman_rl/agent_code" 
 2. Copy "train_my_agent.py" under "/bomberman_rl"
 
 # Task 2: Without Opponents
-## 1. Neural Network (folder: my_agent2DQN)
+## 1. Deep Q Network (folder: my_agent2DQN)
 1) Finish DQN Framework in "callbacks.py" and "train.py"
 2) 1 hidden layer with 64 nodes
 3) 2 hidden layer with 32 nodes for everyone
