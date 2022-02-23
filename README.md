@@ -2,11 +2,10 @@
 
 Repository for the final project of the lecture "Fundamentals of Machine Learning" of Team "Looks Cute".
 ******************************************************************************
-### agent:
-![Alt text](references/avatar.png?raw=true)
-![Alt text](references/avatar1.png?raw=true)
-### bomb:
-![Alt text](references/bomb.png?raw=true)
+### Agent:
+![Alt text](agentFig/avatar1.png?raw=true)  
+### Bomb:
+![Alt text](agentFig/bomb.png?raw=true)
 
 
 ## Materials:
@@ -99,13 +98,13 @@ python main.py play --agents user_agent
 ******************************************************************************
 ******************************************************************************
 ## Create conda environment
-1. Open and Lunch "Anaconda Prompt(Anaconda3)" in Anaconda3(64-bit)
-2. If it is the first time to do the project, do:
+1 Open and Lunch "Anaconda Prompt(Anaconda3)" in Anaconda3(64-bit)
+2 If it is the first time to do the project, do:
 ```console
-1). conda create --name ml_project python=3.8
-2). conda activate ml_project
-3). pip install (the library in requirements.txt)
-4). build a new folder named “mlclass_project” in your desktop
+1) conda create --name ml_project python=3.8
+2) conda activate ml_project
+3) pip install (the library in requirements.txt)
+4) build a new folder named “mlclass_project” in your desktop
 ```
 
 ## Clone repositories
