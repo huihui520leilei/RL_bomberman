@@ -129,12 +129,18 @@ python main.py play --agents user_agent
 4). conda deactivate
 ```
 2. Play one defined agent (in bomberman_rl/agent_code) with three rule_based_agent
+cd bomberman_rl
 ```console
 python main.py play --my-agent random_agent
 ```
 3. Play only one agent in （bomberman_rl/agent_code）
 ```console
 python main.py play --agents peaceful_agent
+```
+### Play
+```console
+python main.py play --agents rule_based_agent --scenario coin-heaven --n-rounds 1
+python main.py play --agents coin_collector_agent --scenario coin-heaven --n-rounds 1
 ```
 ******************************************************************************
 ## Task 1 (Collect all coins without crates and opponents)(Q-table and Sarsa Method)（finished）
@@ -149,16 +155,18 @@ Copy "agent_code/tpl_agent" rename as "my_agent"
 2). Change in "callbacks.py": ACTIONS = ['UP', 'RIGHT', 'DOWN', 'LEFT'], Random choice: p=[.25, .25, .25, .25]
 
 ### 3. Training model based on rule_based_agent 
-
-1). If training run just one times, input in "CMD.exe Prompt":
-
+### Train
 ```console
-python main.py play --agents my_agent --train 1
+cd bomberman_rl
+python main.py play --agents task1_qtable_agent --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
+python main.py play --agents task2_qtable_agent --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
+python main.py play --agents my_agent --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
+python main.py play --agents my_agent2 --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
+python main.py play --agents my_agent2Q_2 --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
+python main.py play --agents my_agent_sarsa --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
 ```
-2). If the number of training runs depends on the "episodes" in "train_my_agent.py", input in "CMD.exe Prompt":
-```console
-python train_my_agent.py
-```
+error in callbacks.py, line 40: `self.q_table = pd.read_pickle('q_table.pkl')`
+
 ### 4. Running Q Learning model for action
 1). Input in "CMD.exe Prompt":
 ```console
