@@ -3,7 +3,7 @@
 
 Repository for the final project of the lecture "Fundamentals of Machine Learning" of Team "Looks Cute".
 ******************************************************************************
-### Agent&nbsp&nbsp&nbsp&nbspBomb
+### Agent &nbsp; &nbsp;&nbsp;&nbsp;Bomb
 ![Alt text](agent_code/my_agent1Q/avatar.png?raw=true)     ![Alt text](agent_code/my_agent1Q/bomb.png?raw=true)
 # Linux
 
