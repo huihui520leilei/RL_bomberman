@@ -1,0 +1,14 @@
+# ignore some latex files
+*.aux
+*.log
+*.synctex.gz
+*.out
+*.bbl
+*.blg
+*.pyg
+*.pytxcode
+# ipython
+.ipynb_checkpoints
+# python
+.pyc
+__pycache__/
