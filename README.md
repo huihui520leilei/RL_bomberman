@@ -88,13 +88,13 @@ python main.py play --agents user_agent
 ******************************************************************************
 ******************************************************************************
 ## Create conda environment
-1. Open and Lunch "Anaconda Prompt(Anaconda3)" in Anaconda3(64-bit)
-2. If it is the first time to do the project, do:
+1 Open and Lunch "Anaconda Prompt(Anaconda3)" in Anaconda3(64-bit)
+2 If it is the first time to do the project, do:
 ```console
-1). conda create --name ml_project python=3.8
-2). conda activate ml_project
-3). pip install (the library in requirements.txt)
-4). build a new folder named “mlclass_project” in your desktop
+1) conda create --name ml_project python=3.8
+2) conda activate ml_project
+3) pip install (the library in requirements.txt)
+4) build a new folder named “mlclass_project” in your desktop
 ```
 
 ## Clone repositories
@@ -168,21 +168,5 @@ python main.py play --agents my_agent2 --train 1
 ## 2. New state based on Q-table (folder: my_agent2Q_2)
 1) works on task 1 does't work on task 2
 
-******************************************************************************
 
-### agent:
-![Alt text](agent_code/my_agent1Q/avatar.png?raw=true)
-### bomb:
-![Alt text](agent_code/my_agent1Q/bomb.png?raw=true)
-
-
-## Materials:
-###  1. Deep Q Learning
-(1) Tutorial Vedio：[Deep Reinforcement Learning](https://www.youtube.com/watch?v=z95ZYgPgXOY&list=PLJV_el3uVTsODxQFgzMzPLa16h6B8kWM_)
-
-(2) [Flappy Bird Using Deep Reinforcement Learning](https://github.com/floodsung/DRL-FlappyBird)
-
-(3) [Using Deep Q-Network to Learn How To Play Flappy Bird](https://github.com/yenchenlin/DeepLearningFlappyBird)
-
-(4) [Maze Using Reinforcement Learning(Q_learning, Sarsa, DQN)](https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow/tree/master/contents)
 
