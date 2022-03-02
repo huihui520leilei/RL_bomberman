@@ -5,6 +5,8 @@ Repository for the final project of the lecture "Fundamentals of Machine Learnin
 ******************************************************************************
 ### Agent &nbsp; &nbsp;&nbsp;&nbsp; Bomb &nbsp; &nbsp;&nbsp;&nbsp; Requirements
 ![Alt text](agent_code/my_agent1Q/avatar.png?raw=true) &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; ![Alt text](agent_code/my_agent1Q/bomb.png?raw=true)
+&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
+```console
 numpy
 scipy
 sklearn
@@ -16,6 +18,7 @@ pandas
 keras
 tensorflow
 # conda install -c anaconda tensorflow-gpu
+```
 # Linux
 
 ### Create conda environment
