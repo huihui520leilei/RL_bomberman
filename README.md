@@ -10,6 +10,7 @@ Repository for the final project of the lecture "Fundamentals of Machine Learnin
 numpy scipy sklearn pygame tqdm matplotlib lightgbm pandas keras tensorflow
 conda install -c anaconda tensorflow-gpu
 ```
+******************************************************************************
 # 1. Linux
 
 ### Create conda environment
