@@ -170,7 +170,7 @@ error in callbacks.py, line 40: `self.q_table = pd.read_pickle('q_table.pkl')`
 ### 4. Running Q Learning model for action
 1). Input in "CMD.exe Prompt":
 ```console
-python main.py play --agents my_agent
+python main.py play --agents my_agent1Q
 ```
 ******************************************************************************
 ## Task 2 (Collect all coins and bomb crates without opponents)
@@ -178,16 +178,17 @@ python main.py play --agents my_agent
 Deep_Q_Network
 [Maze Using Reinforcement Learning(Q_learning, Sarsa, DQN)](https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow/tree/master/contents)
 
-## 1. Neural Network (folder: my_agent2)
-## (Training file: ......)
-2) Finish DQN Framework in "callbacks.py" and "train.py"
-
+### 1. Deep Q Network (folder: my_agent2DQN)
+1) Finish DQN Framework in "callbacks.py" and "train.py"
+2) 1 hidden layer with 64 nodes
+3) 2 hidden layer with 32 nodes for everyone
 Running code:
 ```console
-python main.py play --agents my_agent2 --train 1
+python main.py play --agents my_agent2DQN --train 1
 ```
-## 2. New state based on Q-table (folder: my_agent2Q_2)
-1) works on task 1 does't work on task 2
+### 2. New state based on Q-table (folder: my_agent2Q_2)
+1) works on task 1 does't work on task 2 (the model saved in 'my_agent2Q' is task 1 table trained based on the new state)
+    
 
 
 
