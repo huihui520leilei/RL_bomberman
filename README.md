@@ -89,6 +89,16 @@ python main.py play --agents user_agent
 ******************************************************************************
 # Version(Windows)
 ******************************************************************************
+## Materials:
+###  1. Deep Q Learning
+(1) Tutorial Vedio：[Deep Reinforcement Learning](https://www.youtube.com/watch?v=z95ZYgPgXOY&list=PLJV_el3uVTsODxQFgzMzPLa16h6B8kWM_)
+
+(2) [Flappy Bird Using Deep Reinforcement Learning](https://github.com/floodsung/DRL-FlappyBird)
+
+(3) [Using Deep Q-Network to Learn How To Play Flappy Bird](https://github.com/yenchenlin/DeepLearningFlappyBird)
+
+(4) [Maze Using Reinforcement Learning(Q_learning, Sarsa, DQN)](https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow/tree/master/contents)
+
 ******************************************************************************
 ## Create conda environment
 1 Open and Lunch "Anaconda Prompt(Anaconda3)" in Anaconda3(64-bit)
