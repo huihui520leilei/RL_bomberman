@@ -107,14 +107,14 @@ python main.py play --agents user_agent
 1) conda create --name ml_project python=3.8
 2) conda activate ml_project
 3) pip install (the library in requirements.txt)
-4) build a new folder named “mlclass_project” in your desktop
+4) build a new folder named “ML_Bomberman” in your desktop
 ```
 
 ## Clone repositories
 ```console
-1). git clone git@github.com:holger-ziti/ML_project.git
-2). git clone git@github.com:ukoethe/bomberman_rl.git
-3). Move them all in the folder “mlclass_project”
+1). git clone https://github.com/huihui520leilei/RL_bomberman
+2). git clone https://github.com/ukoethe/bomberman_rl
+3). Move them all in the folder “ML_Bomberman”
 ```
 
 
@@ -123,7 +123,7 @@ python main.py play --agents user_agent
 ```console
 1). conda activate ml_project
 2). cd desktop
-    cd mlclass_project
+    cd ML_Bomberman
     cd bomberman_rl
 3). python main.py play
 4). conda deactivate
