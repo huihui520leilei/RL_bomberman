@@ -142,7 +142,7 @@ cd bomberman_rl
 ```console
 python main.py play --agents peaceful_agent
 ```
-### Play
+### Play just coins
 ```console
 python main.py play --agents rule_based_agent --scenario coin-heaven
 python main.py play --agents coin_collector_agent --scenario coin-heaven
