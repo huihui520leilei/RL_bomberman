@@ -3,8 +3,19 @@
 
 Repository for the final project of the lecture "Fundamentals of Machine Learning" of Team "Looks Cute".
 ******************************************************************************
-### Agent &nbsp; &nbsp;&nbsp;&nbsp;Bomb
+### Agent &nbsp; &nbsp;&nbsp;&nbsp; Bomb &nbsp; &nbsp;&nbsp;&nbsp; Requirements
 ![Alt text](agent_code/my_agent1Q/avatar.png?raw=true) &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; ![Alt text](agent_code/my_agent1Q/bomb.png?raw=true)
+numpy
+scipy
+sklearn
+pygame
+tqdm
+matplotlib
+lightgbm
+pandas
+keras
+tensorflow
+# conda install -c anaconda tensorflow-gpu
 # Linux
 
 ### Create conda environment
