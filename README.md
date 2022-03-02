@@ -150,7 +150,7 @@ Copy "agent_code/tpl_agent" rename as "my_agent"
 
 ### 2. Change the environment
 
-1). Change in "settings.py": CRATE_DENSITY = 0 for empty field, 
+1). Using: scenario coin-heaven
 
 2). Change in "callbacks.py": ACTIONS = ['UP', 'RIGHT', 'DOWN', 'LEFT'], Random choice: p=[.25, .25, .25, .25]
 
