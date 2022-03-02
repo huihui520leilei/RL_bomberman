@@ -36,9 +36,9 @@ def setup(self):
         with open("my-saved-model.pt", "rb") as file:
             self.model = pickle.load(file)
     #-------------------------------------------------------
-    if os.path.isfile('q_table.pkl'):
-        self.q_table = pd.read_pickle('q_table.pkl')
-
+    if os.path.isfile('q_table.pickle'):
+        with open('q_table.pickle', 'rb') as file:
+            self.q_table = pickle.load(file)
 #-------------------------------------------------------------------------------------------------------   
 def act(self, game_state: dict) -> str:
     """
@@ -94,6 +94,7 @@ def act(self, game_state: dict) -> str:
             MaxQval_multi = np.where(stateActions == MaxQval_one)[1]# in this state, the action with same MaxValue in Q table
             Actions_all = np.array(ACTIONS)[MaxQval_multi.astype(int)]
             Action = np.random.choice(Actions_all)
+            #print("1111111111111111111111")
         #todo Exploration vs exploitation-----------------------------------
         random_prob = .1
         if self.train and random.random() < random_prob:

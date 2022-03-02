@@ -42,8 +42,9 @@ def setup_training(self):
     self.n_actions = len(ACTIONS);
     self.learning_rate = 0.1
     self.Gamma = 0.9
-    if os.path.isfile('q_table.pkl'):
-        self.q_table = pd.read_pickle('q_table.pkl')
+    if os.path.isfile('q_table.pickle'):
+        with open('q_table.pickle', 'rb') as f:
+            self.q_table = pickle.load(f)
     else:
         self.q_table = pd.DataFrame(columns=ACTIONS,dtype=np.float64)
 #2 ---------------------------------------------------------------------------------
@@ -73,54 +74,55 @@ def game_events_occurred(self, old_game_state: dict, self_action: str, new_game_
     # print("**************")
     # print(f'Current agent position: {(x_new,y_new)}')
     #Find coordinate of closest targets
-    targets_new = coins_new
-    nearestCoins_new = targets_new[np.argmin(np.sum(np.abs(np.subtract(targets_new, (x_new,y_new))), axis=1))]
-    [x_nearest_coin_new, y_nearest_coin_new] = nearestCoins_new
-    #append new state to q table-------------------------------------------------
-    if (x_new, y_new, x_nearest_coin_new, y_nearest_coin_new) not in self.q_table.index:
-        self.q_table = self.q_table.append(pd.Series([0]*self.n_actions,index=self.q_table.columns,name=(x_new, y_new, x_nearest_coin_new, y_nearest_coin_new)))
-    # print("**************")
-    # print(f'Current Nearest coin position:  {nearestCoins}')
-    
-    #old game state--------------------------------------------------------------
-    if old_game_state is not None:  # in the first step, the old_game_state is none
-        _, score, bombs_left, (x_old, y_old) = old_game_state['self']
-        coins_old = old_game_state['coins']
-        targets_old = coins_old
-        nearestCoins_old = targets_old[np.argmin(np.sum(np.abs(np.subtract(targets_old, (x_old,y_old))), axis=1))]
-        [x_nearest_coin_old, y_nearest_coin_old] = nearestCoins_old
-        #new game state Corresponding Action=========================================
+    if any(coins_new):
+        targets_new = coins_new
+        nearestCoins_new = targets_new[np.argmin(np.sum(np.abs(np.subtract(targets_new, (x_new,y_new))), axis=1))]
+        [x_nearest_coin_new, y_nearest_coin_new] = nearestCoins_new
+        #append new state to q table-------------------------------------------------
         if (x_new, y_new, x_nearest_coin_new, y_nearest_coin_new) not in self.q_table.index:
-            Action_new = rule_act(self, new_game_state)
-        else:
-            stateActions_new = self.q_table.loc[[(x_new, y_new, x_nearest_coin_new, y_nearest_coin_new)]]
-            MaxQval_one_new = stateActions_new.max(1).tolist()*len(ACTIONS)# in this state, the MaxValue action in Q table
-            MaxQval_multi_new = np.where(stateActions_new == MaxQval_one_new)[1]# in this state, the action with same MaxValue in Q table
-            Actions_all_new = np.array(ACTIONS)[MaxQval_multi_new.astype(int)]
-            Action_new = np.random.choice(Actions_all_new)
-        #Reward======================================================================
-        reward = reward_from_events(self, events)
-        #============================================================================     
-        #Qtable update------------------------------------------------------------
-        q_predict = self.q_table.loc[[(x_old,y_old,x_nearest_coin_old, y_nearest_coin_old)],[self_action]].values
-        if targets_new is not None:#there still have coins
-            q_target = reward + self.Gamma * self.q_table.loc[[(x_new, y_new, x_nearest_coin_new, y_nearest_coin_new)],[Action_new]].values
-            #print(self.q_table.loc[[(x_new, y_new, x_nearest_coin_new, y_nearest_coin_new)],[Action_new]].values)
-        else:
-            q_target = reward  # next state is terminal
-        self.q_table.loc[[(x_old,y_old,x_nearest_coin_old, y_nearest_coin_old)],[self_action]] += self.learning_rate * (q_target - q_predict)  # update
-    
-    #----------------------------------------------------------------------------- 
-    #reward = self.reward_from_events(events)
-#3 -----------------------------------------------------------------------------
-    self.logger.debug(f'Encountered game event(s) {", ".join(map(repr, events))} in step {new_game_state["step"]}')
+            self.q_table = self.q_table.append(pd.Series([0]*self.n_actions,index=self.q_table.columns,name=(x_new, y_new, x_nearest_coin_new, y_nearest_coin_new)))
+        # print("**************")
+        # print(f'Current Nearest coin position:  {nearestCoins}')
+        
+        #old game state--------------------------------------------------------------
+        if old_game_state is not None:  # in the first step, the old_game_state is none
+            _, score, bombs_left, (x_old, y_old) = old_game_state['self']
+            coins_old = old_game_state['coins']
+            targets_old = coins_old
+            nearestCoins_old = targets_old[np.argmin(np.sum(np.abs(np.subtract(targets_old, (x_old,y_old))), axis=1))]
+            [x_nearest_coin_old, y_nearest_coin_old] = nearestCoins_old
+            #new game state Corresponding Action=========================================
+            if (x_new, y_new, x_nearest_coin_new, y_nearest_coin_new) not in self.q_table.index:
+                Action_new = rule_act(self, new_game_state)
+            else:
+                stateActions_new = self.q_table.loc[[(x_new, y_new, x_nearest_coin_new, y_nearest_coin_new)]]
+                MaxQval_one_new = stateActions_new.max(1).tolist()*len(ACTIONS)# in this state, the MaxValue action in Q table
+                MaxQval_multi_new = np.where(stateActions_new == MaxQval_one_new)[1]# in this state, the action with same MaxValue in Q table
+                Actions_all_new = np.array(ACTIONS)[MaxQval_multi_new.astype(int)]
+                Action_new = np.random.choice(Actions_all_new)
+            #Reward======================================================================
+            reward = reward_from_events(self, events)
+            #============================================================================     
+            #Qtable update------------------------------------------------------------
+            q_predict = self.q_table.loc[[(x_old,y_old,x_nearest_coin_old, y_nearest_coin_old)],[self_action]].values
+            if targets_new is not None:#there still have coins
+                q_target = reward + self.Gamma * self.q_table.loc[[(x_new, y_new, x_nearest_coin_new, y_nearest_coin_new)],[Action_new]].values
+                #print(self.q_table.loc[[(x_new, y_new, x_nearest_coin_new, y_nearest_coin_new)],[Action_new]].values)
+            else:
+                q_target = reward  # next state is terminal
+            self.q_table.loc[[(x_old,y_old,x_nearest_coin_old, y_nearest_coin_old)],[self_action]] += self.learning_rate * (q_target - q_predict)  # update
+        
+        #----------------------------------------------------------------------------- 
+        #reward = self.reward_from_events(events)
+    #3 -----------------------------------------------------------------------------
+        self.logger.debug(f'Encountered game event(s) {", ".join(map(repr, events))} in step {new_game_state["step"]}')
 
-    # Idea: Add your own events to hand out rewards
-    if ...:
-        events.append(PLACEHOLDER_EVENT)
+        # Idea: Add your own events to hand out rewards
+        if ...:
+            events.append(PLACEHOLDER_EVENT)
 
-    # state_to_features is defined in callbacks.py
-    self.transitions.append(Transition(state_to_features(old_game_state), self_action, state_to_features(new_game_state), reward_from_events(self, events)))
+        # state_to_features is defined in callbacks.py
+        self.transitions.append(Transition(state_to_features(old_game_state), self_action, state_to_features(new_game_state), reward_from_events(self, events)))
 
 
 def end_of_round(self, last_game_state: dict, last_action: str, events: List[str]):
@@ -142,7 +144,8 @@ def end_of_round(self, last_game_state: dict, last_action: str, events: List[str
     with open("my-saved-model.pt", "wb") as file:
         pickle.dump(self.model, file)
     #-----------------------------------    
-    self.q_table.to_pickle('q_table.pkl')
+    with open("q_table.pickle", "wb") as file:
+        pickle.dump(self.q_table, file) 
     #print(self.q_table)
 
 
