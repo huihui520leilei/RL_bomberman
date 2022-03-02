@@ -10,7 +10,7 @@ Repository for the final project of the lecture "Fundamentals of Machine Learnin
 numpy scipy sklearn pygame tqdm matplotlib lightgbm pandas keras tensorflow
 conda install -c anaconda tensorflow-gpu
 ```
-# Linux
+# 1. Linux
 
 ### Create conda environment
 ```console
@@ -90,7 +90,7 @@ python main.py play --agents user_agent
 
 ******************************************************************************
 ******************************************************************************
-# Version(Windows)
+# 2. Windows
 ******************************************************************************
 ## Materials:
 ###  1. Deep Q Learning
