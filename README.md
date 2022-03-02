@@ -36,10 +36,10 @@ change `settings.py`: CRATE_DENSITY = 0 for empty field or use `coin-heaven` sce
 ```console
 ln -s ~/git/RL_bomberman/agent_code/task1_qtable_agent/ ~/git/bomberman_rl/agent_code/
 ln -s ~/git/RL_bomberman/agent_code/task2_qtable_agent/ ~/git/bomberman_rl/agent_code/
-ln -s ~/git/RL_bomberman/agent_code/my_agent/ ~/git/bomberman_rl/agent_code/
-ln -s ~/git/RL_bomberman/agent_code/my_agent2/ ~/git/bomberman_rl/agent_code/
-ln -s ~/git/RL_bomberman/agent_code/my_agent2Q_2/ ~/git/bomberman_rl/agent_code/
-ln -s ~/git/RL_bomberman/agent_code/my_agent_sarsa/ ~/git/bomberman_rl/agent_code/
+ln -s ~/git/RL_bomberman/agent_code/my_agent1Q/ ~/git/bomberman_rl/agent_code/
+ln -s ~/git/RL_bomberman/agent_code/my_agent1Sarsa/ ~/git/bomberman_rl/agent_code/
+ln -s ~/git/RL_bomberman/agent_code/my_agent2DQN/ ~/git/bomberman_rl/agent_code/
+ln -s ~/git/RL_bomberman/agent_code/my_agent2Q/ ~/git/bomberman_rl/agent_code/
 ```
 
 ### Train
@@ -47,10 +47,10 @@ ln -s ~/git/RL_bomberman/agent_code/my_agent_sarsa/ ~/git/bomberman_rl/agent_cod
 cd bomberman_rl
 python main.py play --agents task1_qtable_agent --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
 python main.py play --agents task2_qtable_agent --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
-python main.py play --agents my_agent --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
-python main.py play --agents my_agent2 --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
-python main.py play --agents my_agent2Q_2 --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
-python main.py play --agents my_agent_sarsa --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
+python main.py play --agents my_agent1Q --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
+python main.py play --agents my_agent1Sarsa --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
+python main.py play --agents my_agent2DQN --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
+python main.py play --agents my_agent2Q --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
 ```
 error in callbacks.py, line 40: `self.q_table = pd.read_pickle('q_table.pkl')`
 
@@ -116,38 +116,39 @@ python main.py play --agents user_agent
 
 ## Clone repositories
 ```console
-1). git clone https://github.com/huihui520leilei/RL_bomberman
-2). git clone https://github.com/ukoethe/bomberman_rl
-3). Move them all in the folder “ML_Bomberman”, merge the 'agent_code' in 'RL_bomberman' to 'bomberman_rl'
+1) git clone https://github.com/huihui520leilei/RL_bomberman
+2) git clone https://github.com/ukoethe/bomberman_rl
+3) Move them all in the folder “ML_Bomberman”, merge the 'agent_code' in 'RL_bomberman' to 'bomberman_rl'
 ```
 
 
 ## Play
-1. input command in "CMD.exe Prompt": activate, run rule_based_agent example, deactivate
+1 input command in "CMD.exe Prompt": activate, run rule_based_agent example, deactivate
 ```console
-1). conda activate ml_project
-2). cd desktop
-    cd ML_Bomberman
-    cd bomberman_rl
-3). python main.py play
-4). conda deactivate
+1) conda activate ml_project
+2) cd desktop
+   cd ML_Bomberman
+   cd bomberman_rl
+3) python main.py play
+4) conda deactivate
 ```
-2. Play one defined agent (in bomberman_rl/agent_code) with three rule_based_agent
+2 Play one defined agent (in bomberman_rl/agent_code) with three rule_based_agent
 cd bomberman_rl
 ```console
 python main.py play --my-agent random_agent
 ```
-3. Play only one agent in （bomberman_rl/agent_code）
+3 Play only one agent in （bomberman_rl/agent_code）
+cd bomberman_rl
 ```console
 python main.py play --agents peaceful_agent
 ```
 ### Play
 ```console
-python main.py play --agents rule_based_agent --scenario coin-heaven --n-rounds 1
-python main.py play --agents coin_collector_agent --scenario coin-heaven --n-rounds 1
+python main.py play --agents rule_based_agent --scenario coin-heaven
+python main.py play --agents coin_collector_agent --scenario coin-heaven
 ```
 ******************************************************************************
-## Task 1 (Collect all coins without crates and opponents)(Q-table and Sarsa Method)（finished）
+## Task 1 (Collect all coins without crates and opponents)(Q-table and Sarsa Method)(finished)
 ### 1. Create your own agent
 
 Copy "agent_code/tpl_agent" rename as "my_agent"
@@ -164,18 +165,16 @@ Copy "agent_code/tpl_agent" rename as "my_agent"
 cd bomberman_rl
 python main.py play --agents task1_qtable_agent --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
 python main.py play --agents task2_qtable_agent --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
-python main.py play --agents my_agent --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
-python main.py play --agents my_agent2 --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
-python main.py play --agents my_agent2Q_2 --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
-python main.py play --agents my_agent_sarsa --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
+python main.py play --agents my_agent1Q --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
+python main.py play --agents my_agent1Sarsa --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
+python main.py play --agents my_agent2DQN --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
+python main.py play --agents my_agent2Q --scenario coin-heaven --n-rounds 100 --train 1 --no-gui
 ```
-error in callbacks.py, line 40: `self.q_table = pd.read_pickle('q_table.pkl')`
-
 ### 4. Running Q Learning model for action
 1). Input in "CMD.exe Prompt":
 ```console
-python main.py play --agents my_agent1Q --scenario coin-heaven --n-rounds 1
-python main.py play --agents my_agent1Sarsa --scenario coin-heaven --n-rounds 1
+python main.py play --agents my_agent1Q --scenario coin-heaven
+python main.py play --agents my_agent1Sarsa --scenario coin-heaven
 ```
 ******************************************************************************
 ## Task 2 (Collect all coins and bomb crates without opponents)
