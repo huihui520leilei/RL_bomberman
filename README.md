@@ -114,7 +114,7 @@ python main.py play --agents user_agent
 ```console
 1). git clone https://github.com/huihui520leilei/RL_bomberman
 2). git clone https://github.com/ukoethe/bomberman_rl
-3). Move them all in the folder “ML_Bomberman”
+3). Move them all in the folder “ML_Bomberman”, merge the 'agent_code' in 'RL_bomberman' to 'bomberman_rl'
 ```
 
 
