@@ -170,7 +170,8 @@ error in callbacks.py, line 40: `self.q_table = pd.read_pickle('q_table.pkl')`
 ### 4. Running Q Learning model for action
 1). Input in "CMD.exe Prompt":
 ```console
-python main.py play --agents my_agent1Q
+python main.py play --agents my_agent1Q --scenario coin-heaven --n-rounds 1
+python main.py play --agents my_agent1Sarsa --scenario coin-heaven --n-rounds 1
 ```
 ******************************************************************************
 ## Task 2 (Collect all coins and bomb crates without opponents)
