@@ -3,8 +3,8 @@
 
 Repository for the final project of the lecture "Fundamentals of Machine Learning" of Team "Looks Cute".
 ******************************************************************************
-### Agent    Bomb
-![Alt text](agent_code/my_agent1Q/avatar.png?raw=true)  ![Alt text](agent_code/my_agent1Q/bomb.png?raw=true)
+### Agent         Bomb
+![Alt text](agent_code/my_agent1Q/avatar.png?raw=true)     ![Alt text](agent_code/my_agent1Q/bomb.png?raw=true)
 # Linux
 
 ### Create conda environment
