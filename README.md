@@ -32,6 +32,13 @@ git clone git@github.com:ukoethe/bomberman_rl.git
 ### Change the environment
 change `settings.py`: CRATE_DENSITY = 0 for empty field or use `coin-heaven` scenario
 
+```
+    "light-grade": {
+        "CRATE_DENSITY": 0.25,
+        "COIN_COUNT": 9
+    },
+```
+
 ### Symbolic link (better than copy for development):
 ```console
 ln -s ~/git/RL_bomberman/agent_code/task1_qtable_agent/ ~/git/bomberman_rl/agent_code/

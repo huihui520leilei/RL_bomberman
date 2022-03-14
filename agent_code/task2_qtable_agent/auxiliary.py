@@ -2,22 +2,22 @@ import math
 
 import pickle # debugging
 
-init_rand_min = -5.0
+init_rand_min = -2.0
 init_rand_max = -2.0
 
 ### parameters
-max_goal_distance = 2
+max_goal_distance = 5
 learning_rate = 0.5
 discount = 0.95
 
 x_fov = max_goal_distance * 2 + 1 # number of possibilities for relative position of the nearest coin
 y_fov = max_goal_distance * 2 + 1
-number_of_goals = 3
+number_of_goals = 2
 
 
 ### definitions
-TASK2_ACTIONS = ['UP', 'RIGHT', 'DOWN', 'LEFT', 'BOMB'] # task 2 -> exclude 'WAIT' 
-TASK2_QTABLE_SIZE = (3, 3, 3, 3, x_fov, y_fov, number_of_goals, len(TASK2_ACTIONS)) # (up, down, right, left, x_fov, y_fov, n_actions) 
+TASK2_ACTIONS = ['UP', 'RIGHT', 'DOWN', 'LEFT', 'BOMB', 'WAIT'] # task 2 -> exclude 'WAIT' 
+TASK2_QTABLE_SIZE = (3, 3, 3, 3, 3, x_fov, y_fov, number_of_goals, len(TASK2_ACTIONS)) # (mode, up, down, right, left, x_fov, y_fov, goals, n_actions) 
 
 
 ### functions
@@ -59,32 +59,37 @@ def get_goal_information_from_game_state(game_state):
 		crate_xys = get_crates_position_list(game_state) 
 
 		mode = 0
-		goal = -1
+		goal = 0
 		[x_next_goal, y_next_goal] = [0,0]
 
 		if len(explosion_xys): # explosions active
 			mode = -1
-			goal = 0 # treat like bomb
+			goal = 1 
 			[x_next_goal, y_next_goal] = get_relative_position_to_nearest_goal((x, y), explosion_xys, max_goal_distance)
-			if len(bomb_xys) > 0: # bomb exists
+			return (mode, goal, x_next_goal, y_next_goal)
+		elif len(bomb_xys) > 0: # bomb exists
 				mode = -1 # escape
 				goal = 0 # bomb
 				[x_next_goal, y_next_goal] = get_relative_position_to_nearest_goal((x, y), bomb_xys, max_goal_distance)
+				return (mode, goal, x_next_goal, y_next_goal)
+		else:
+			mode = 1 # approach goal
+			if len(crate_xys) > 0: # crates exist (but no bombs)
+				goal = 0 # crate
+				[x_next_goal, y_next_goal] = get_relative_position_to_nearest_goal((x, y), crate_xys, max_goal_distance)
+				return (mode, goal, x_next_goal, y_next_goal)
 			else:
-				mode = 1 # approach
-				if len(crate_xys) > 0: # crates exist (but no bombs)
-					goal = 1 # crate
-					[x_next_goal, y_next_goal] = get_relative_position_to_nearest_goal((x, y), crate_xys, max_goal_distance)
-				else:
-					if len(coins) > 0: # coins exist (but no bombs and no crates)
-						goal = 2 # coins
-						[x_next_goal, y_next_goal] = get_relative_position_to_nearest_goal((x, y), coins, max_goal_distance)
-					else: # default values
-						mode = 0
-						goal = -1
-						[x_next_goal, y_next_goal] = [0,0]
+				if len(coins) > 0: # coins exist (but no bombs and no crates)
+					goal = 1 # coins
+					[x_next_goal, y_next_goal] = get_relative_position_to_nearest_goal((x, y), coins, max_goal_distance)
+					return (mode, goal, x_next_goal, y_next_goal)
+				else: # default values
+					mode = 0
+					goal = -1
+					[x_next_goal, y_next_goal] = [0,0]
+					return (mode, goal, x_next_goal, y_next_goal)
 
-		return (mode, goal, x_next_goal, y_next_goal)
+
 
 
 def get_relative_coin_positions(position, coins):

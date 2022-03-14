@@ -28,8 +28,10 @@ def setup(self):
 
     if os.path.isfile('saved/q_table.npy'):
         self.q_table = np.load('saved/q_table.npy')
+
     else:
         self.logger.info("Warning: No Q-table loaded!")
+
 
 def act(self, game_state: dict) -> str:
     """
@@ -49,14 +51,39 @@ def act(self, game_state: dict) -> str:
     # choose action via exploration
 
 
-    epsilon = 1.0 / (game_state['round']*game_state['step'])
 
-    if random.random() < 0.01:#epsilon: #0.01: 
-        return np.random.choice(TASK2_ACTIONS, p=[.2, .2, .2, .2, .2])
+    epsilon = 1.0 / (game_state['round'])
+
+    if self.train:
+        if random.random() < epsilon:#0.1: #epsilon: # 0.1:#epsilon: #0.01: 
+            #print(f'epsilon: {epsilon}')
+            return np.random.choice(TASK2_ACTIONS, p=[.2, .2, .2, .2, .1, .1])
+    else:
+        if random.random() < 0.01:#epsilon: #0.01: 
+            print('randomly choosing')
+            return np.random.choice(TASK2_ACTIONS, p=[.2, .2, .2, .2, .1, .1])
 
     #self.logger.debug("Querying q-table for action.")
     features = state_to_features(game_state)
     action_index = np.argmax(self.q_table[features])
+
+    if not(self.train):
+        if features[0] == -1:
+            if features[7] == 0:
+                print("escape from bomb")
+            if features[7] == 1:
+                print('escape from explosion')
+        if features[0] == +1:
+            if features[7] == 0:
+                print("approach to grate")
+            if features[7] == 1:
+                print("approach to coin")
+        print('mode,     up,    down,      right,     left,     x_next_goal,     y_next_goal,     goal ')
+        print(features)
+        print(f'min q-value: {np.min(self.q_table)} --- max q-value: {np.max(self.q_table)}')
+        print(TASK2_ACTIONS[action_index])
+    if features[0]==0:
+        print('mode in default value')
 
 
     return TASK2_ACTIONS[action_index]
@@ -81,7 +108,7 @@ def state_to_features(game_state: dict) -> list:
     """
     # This is the dict before the game begins and after it ends
     if game_state is None:
-        return (0, 0, 0, 0, 0, 0, 0) # in the first step, the old_game_state is none
+        return (0, 0, 0, 0, 0, 0, 0, 0) # in the first step, the old_game_state is none
 
     else:
         (mode, goal, x_next_goal, y_next_goal) = get_goal_information_from_game_state(game_state)
@@ -92,5 +119,5 @@ def state_to_features(game_state: dict) -> list:
         [up, down, right, left] = get_surrounding((x, y), arena, explosions) # == 1 if occupied
 
 
-        features = (up, down, right, left, x_next_goal, y_next_goal, goal) #features are indexes for q-table
+        features = (mode, up, down, right, left, x_next_goal, y_next_goal, goal) #features are indexes for q-table
         return features
