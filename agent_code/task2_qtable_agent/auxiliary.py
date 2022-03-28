@@ -6,13 +6,14 @@ init_rand_min = -2.0
 init_rand_max = -2.0
 
 ### parameters
-max_goal_distance = 5
-learning_rate = 0.5
+max_goal_distance = 4
+learning_rate = 0.3
 discount = 0.95
 
 x_fov = max_goal_distance * 2 + 1 # number of possibilities for relative position of the nearest coin
 y_fov = max_goal_distance * 2 + 1
 number_of_goals = 2
+
 
 
 ### definitions
@@ -41,6 +42,16 @@ def get_explosion_position_list(game_state):
 				explosion_list.append((x,y))
 	return explosion_list
 
+def action_opposite(action):
+	if action == "LEFT":
+		return "RIGHT"
+	if action == "RIGHT":
+		return "LEFT"
+	if action == "UP":
+		return "DOWN"
+	if action == "DOWN":
+		return "UP"
+	return ""
 
 def get_goal_information_from_game_state(game_state):
 

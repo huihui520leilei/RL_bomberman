@@ -1,0 +1,9 @@
+2022-03-28 09:43:23,630 [my_agent1Sarsa_code] DEBUG: Successfully entered setup code
+2022-03-28 09:43:23,630 [my_agent1Sarsa_code] INFO: Loading model from saved state.
+2022-03-28 09:43:23,631 [my_agent1Sarsa_wrapper] ERROR: Can't get attribute 'new_block' on <module 'pandas.core.internals.blocks' from '/home/holger/.local/lib/python3.8/site-packages/pandas/core/internals/blocks.py'>
+Traceback (most recent call last):
+  File "/home/holger/git/bomberman_rl/agents.py", line 248, in process_event
+    event_result = getattr(module, event_name)(self.fake_self, *event_args)
+  File "/home/holger/git/bomberman_rl/agent_code/my_agent1Sarsa/callbacks.py", line 41, in setup
+    self.q_table = pickle.load(file)
+AttributeError: Can't get attribute 'new_block' on <module 'pandas.core.internals.blocks' from '/home/holger/.local/lib/python3.8/site-packages/pandas/core/internals/blocks.py'>

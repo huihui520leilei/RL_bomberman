@@ -9,7 +9,7 @@ import events as e
 from .callbacks import state_to_features, get_goal_information_from_game_state
 from .auxiliary import TASK2_ACTIONS, TASK2_QTABLE_SIZE
 from .auxiliary import learning_rate, discount
-from .auxiliary import init_rand_min, init_rand_max, get_crates_position_list
+from .auxiliary import init_rand_min, init_rand_max, get_crates_position_list, action_opposite
 
 
 from .auxiliary import features_to_string
@@ -32,6 +32,11 @@ def setup_training(self):
     else:
         self.log_df = pd.DataFrame(columns=['round', 'step', 'coins_left'])
     
+    # storing data
+    self.last_old = None # saving the game state before old game state
+    self.last_action = None
+    self.start_round = True
+
 
 
 
@@ -52,25 +57,12 @@ def game_events_occurred(self, old_game_state: dict, self_action: str, new_game_
     :param new_game_state: The state the agent is in now.
     :param events: The events that occurred when going from  `old_game_state` to `new_game_state`
     """
+    if self.start_round:
+        crate_position_list = get_crates_position_list(new_game_state)
+        self.crates_at_start = len(crate_position_list)
+        self.start_round = False
+
     self.logger.debug(f'Encountered game event(s) {", ".join(map(repr, events))} in step {new_game_state["step"]}')
-
-    
-    (mode_old, up_old, down_old, right_old, left_old, x_next_goal_old, y_next_goal_old, goal_old) = state_to_features(old_game_state)
-    (mode,     up,    down,      right,     left,     x_next_goal,     y_next_goal,     goal    ) = state_to_features(new_game_state)
-    
-    # compute distance to goal
-    goal_dist_old = np.sqrt(x_next_goal_old**2+y_next_goal_old**2)
-    goal_dist_new = np.sqrt(x_next_goal**2    +y_next_goal**2    )
-
-
-
-    if old_game_state is None:
-        self.last_old = None
-        self.last_action = None
-
-    (mode_lo,     up_lo,    down_lo,      right_lo,     left_lo,     x_next_goal_lo,     y_next_goal_lo,     goal_lo    ) = state_to_features(self.last_old)
-    l1 = [mode,     up,    down,      right,     left,     x_next_goal,     y_next_goal,     goal    ]
-    l2 = [mode_lo,     up_lo,    down_lo,      right_lo,     left_lo,     x_next_goal_lo,     y_next_goal_lo,     goal_lo    ]
 
 
     if self_action is not None:
@@ -78,57 +70,63 @@ def game_events_occurred(self, old_game_state: dict, self_action: str, new_game_
     else:
         action_index = 1
 
+    (mode_lo,     up_lo,    down_lo,      right_lo,     left_lo,     x_next_goal_lo,     y_next_goal_lo,     goal_lo    ) = state_to_features(self.last_old)
+    (mode_old, up_old, down_old, right_old, left_old, x_next_goal_old, y_next_goal_old, goal_old) = state_to_features(old_game_state)
+    (mode,     up,    down,      right,     left,     x_next_goal,     y_next_goal,     goal    ) = state_to_features(new_game_state)
 
+
+
+    l1 = state_to_features(new_game_state) 
+    l2 = state_to_features(self.last_old)
+
+
+
+    # compute distance to goal
+    goal_dist_old = np.sqrt(x_next_goal_old**2+y_next_goal_old**2)
+    goal_dist_new = np.sqrt(x_next_goal**2    +y_next_goal**2    )
 
 
     reward = 0.0
     if (e.INVALID_ACTION in events):
-        reward = reward - 3.0
+        reward = reward - 10.0
+
+    if l1==l2 and (self.last_action == action_opposite(self_action)): # back-and-forth loop penalty
+        #print('loop detected')
+        reward = reward - 10.0 # loop penalty
 
 
-    if l1==l2 and (self.last_action != self_action):
-        reward = reward - 3.0 # loop penalty
+    if (mode == -1):
+        reward += goal_dist_new # reward for having great distance to bombs and explosions
 
-
-    #if goal_old == 0:
-    #    reward += goal_dist_new/2.0 # reward for having great distance to bombs and explosions
-
-    #if (mode_old==mode) and (goal_dist_new < goal_dist_old):
-    #    reward = reward + (mode_old * 1.0)
-
-    #if (mode_old==mode) and (goal_dist_new > goal_dist_old):
-    #    reward = reward - (mode_old * 1.0)
-
-    if (mode_old == 1): # approach
+    if (mode_old == 1) and (mode == 1): # approaching to goal
         if (goal_dist_new < goal_dist_old):
-            reward = reward + 2
-        elif (goal_dist_new > goal_dist_old):
-            reward = reward - 2
-
-    if (mode_old == -1): #escape
-        if (goal_dist_new < goal_dist_old):
-            reward = reward - 2.0
-        elif (goal_dist_new > goal_dist_old):
             reward = reward + 1.0
-    
+        elif (goal_dist_new >= goal_dist_old): # waiting is not good
+            reward = reward - 1.0
+
+    if (mode_old == -1) and (mode == -1): # escaping from goal
+        if (goal_dist_new < goal_dist_old): 
+            reward = reward - 1.0
+        elif (goal_dist_new >= goal_dist_old): # also waiting can be good
+            reward = reward + 1.0
+
     if (e.BOMB_DROPPED in events):
         if (mode_old==1) and (goal_old==0) and (goal_dist_old==1.0):
-                reward += 5.0 # that is a good point to drop a bomb
+                reward += 50.0 # that is a good point to drop a bomb
                 #print("reward for bomb")
         else:
             reward -= 3.0 # we do not want bombs otherwise
 
     if (mode_old == -1) and (e.BOMB_DROPPED in events): #no bombs while escaping
-        reward = reward - 2.0
+        reward = reward - 5.0
     
     if (e.GOT_KILLED in events):
-        reward = reward -7.5
+        reward = reward -50.0
 
-    if (mode_old==-1) and (goal_old == 0) and (e.CRATE_DESTROYED in events) and not(e.GOT_KILLED in events):
-        reward = reward + 1.0 # crate destroyed while 
+    #if (mode_old==-1) and (goal_old == 0) and (e.CRATE_DESTROYED in events) and not(e.GOT_KILLED in events):
+    #    reward = reward + 10.0 # crate destroyed while 
     
     if (mode_old==1) and (self_action=='WAIT'): 
-        #print('penalty for waiting')
         reward = reward - 2.5 # we do not want to wait if there is no danger
     
     if (mode_old==1) and (goal_old==1) and (e.COIN_COLLECTED in events):
@@ -166,35 +164,39 @@ def end_of_round(self, last_game_state: dict, last_action: str, events: List[str
 
     :param self: The same object that is passed to all of your callbacks.
     """
+
     crate_position_list = get_crates_position_list(last_game_state)
     crates_left = len(crate_position_list)
-
+    step = last_game_state['step']
     coins_left = last_game_state['coins']
-    if not (len(coins_left) <= 1 and (e.COIN_COLLECTED in events)):
-        step = last_game_state['step']
-        print(f'coin(s) left: {len(coins_left)} step: {step} crates left: {crates_left}')
+
+    if (len(coins_left) > 1) or (crates_left > 1): # coins left or crates left
+        print(f'coin(s) left: {len(coins_left)} step: {step} crates destroyed: {self.crates_at_start - crates_left}')
+        #print(f'coin(s) left: {len(coins_left)} step: {step} crates left: {crates_left} crates at start: {self.crates_at_start}')
         
         # if the last action / state was not successful, lower q-value
         (mode_last, up_last, down_last, right_last, left_last, x_next_coin_last, y_next_coin_last, goal_last) = state_to_features(last_game_state)
         action_index = TASK2_ACTIONS.index(last_action)
-        self.q_table[(mode_last, up_last, down_last, right_last, left_last, x_next_coin_last, y_next_coin_last, goal_last, action_index)] = self.q_table[(mode_last, up_last, down_last, right_last, left_last, x_next_coin_last, y_next_coin_last, goal_last, action_index)] - 10.0#0.3 # 0.3
+        self.q_table[(mode_last, up_last, down_last, right_last, left_last, x_next_coin_last, y_next_coin_last, goal_last, action_index)] = self.q_table[(mode_last, up_last, down_last, right_last, left_last, x_next_coin_last, y_next_coin_last, goal_last, action_index)] - 5.0
+
     np.save('q_table.npy', self.q_table)
 
     round = last_game_state['round']
     step = last_game_state['step']
     coins_left = len(coins_left)
+    crates_destroyed = self.crates_at_start - crates_left
 
+    self.start_round = True
 
-    new_entry = pd.DataFrame({'round': [round], 'step': [step], 'coins_left': [coins_left]})
+    new_entry = pd.DataFrame({
+        'round': [round], 
+        'step': [step], 
+        'coins_left': [coins_left], 
+        'creates_destroyed': [crates_destroyed]})
+
     self.log_df = pd.concat([self.log_df, new_entry])
 
     self.log_df.to_csv('train_log.csv', index=False)
-
-
-
-
-
-
 
 
 def reward_from_events(self, events: List[str]) -> int:

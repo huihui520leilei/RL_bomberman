@@ -1,0 +1,25 @@
+2022-03-28 10:00:05,265 [my_agent1Q_code] DEBUG: Successfully entered setup code
+2022-03-28 10:00:05,265 [my_agent1Q_code] INFO: Setting up model from scratch.
+2022-03-28 10:00:05,269 [my_agent1Q_code] INFO: Picking action according to rule set
+2022-03-28 10:00:05,269 [my_agent1Q_code] DEBUG: Valid actions: ['RIGHT', 'UP', 'WAIT', 'BOMB']
+2022-03-28 10:00:05,270 [my_agent1Q_code] DEBUG: Suitable target found at (1, 15)
+2022-03-28 10:00:05,274 [my_agent1Q_code] INFO: Awarded 1 for events MOVED_RIGHT
+2022-03-28 10:00:05,274 [my_agent1Q_wrapper] ERROR: "None of [Index([(1, 15, 1, 15)], dtype='object')] are in the [index]"
+Traceback (most recent call last):
+  File "/home/holger/git/bomberman_rl/agents.py", line 248, in process_event
+    event_result = getattr(module, event_name)(self.fake_self, *event_args)
+  File "/home/holger/git/bomberman_rl/agent_code/my_agent1Q/train.py", line 108, in game_events_occurred
+    q_predict = self.q_table.loc[[(x_old,y_old,x_nearest_coin_old, y_nearest_coin_old)],[self_action]].values
+  File "/home/holger/.local/lib/python3.8/site-packages/pandas/core/indexing.py", line 889, in __getitem__
+    return self._getitem_tuple(key)
+  File "/home/holger/.local/lib/python3.8/site-packages/pandas/core/indexing.py", line 1067, in _getitem_tuple
+    return self._multi_take(tup)
+  File "/home/holger/.local/lib/python3.8/site-packages/pandas/core/indexing.py", line 1019, in _multi_take
+    d = {
+  File "/home/holger/.local/lib/python3.8/site-packages/pandas/core/indexing.py", line 1020, in <dictcomp>
+    axis: self._get_listlike_indexer(key, axis)
+  File "/home/holger/.local/lib/python3.8/site-packages/pandas/core/indexing.py", line 1266, in _get_listlike_indexer
+    self._validate_read_indexer(keyarr, indexer, axis, raise_missing=raise_missing)
+  File "/home/holger/.local/lib/python3.8/site-packages/pandas/core/indexing.py", line 1308, in _validate_read_indexer
+    raise KeyError(f"None of [{key}] are in the [{axis_name}]")
+KeyError: "None of [Index([(1, 15, 1, 15)], dtype='object')] are in the [index]"

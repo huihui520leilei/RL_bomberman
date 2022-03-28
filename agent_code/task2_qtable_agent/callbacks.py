@@ -4,24 +4,17 @@ import random
 import numpy as np
 import pandas as pd
 
-
 from .auxiliary import get_surrounding, get_goal_information_from_game_state
 from .auxiliary import TASK2_ACTIONS
 from .auxiliary import max_goal_distance
 
 
-
 def setup(self):
     """
-    Setup your code. This is called once when loading each agent.
-    Make sure that you prepare everything such that act(...) can be called.
-
+    This is called once when loading each agent.
+    
     When in training mode, the separate `setup_training` in train.py is called
-    after this method. This separation allows you to share your trained agent
-    with other students, without revealing your training code.
-
-    In this example, our model is a set of probabilities over actions
-    that are is independent of the game state.
+    after this method. 
 
     :param self: This object is passed to all callbacks and you can set arbitrary values.
     """
@@ -30,6 +23,7 @@ def setup(self):
         self.q_table = np.load('saved/q_table.npy')
 
     else:
+        print("PLEASE COPY Q-TABLE TO FOLDER")
         self.logger.info("Warning: No Q-table loaded!")
 
 
@@ -50,9 +44,7 @@ def act(self, game_state: dict) -> str:
     # else:
     # choose action via exploration
 
-
-
-    epsilon = 1.0 / (game_state['round'])
+    epsilon = 0.1 # 1.0 / (game_state['round'])
 
     if self.train:
         if random.random() < epsilon:#0.1: #epsilon: # 0.1:#epsilon: #0.01: 
@@ -83,7 +75,7 @@ def act(self, game_state: dict) -> str:
         print(f'min q-value: {np.min(self.q_table)} --- max q-value: {np.max(self.q_table)}')
         print(TASK2_ACTIONS[action_index])
     if features[0]==0:
-        print('mode in default value')
+        print('mode in default value') # should not happen
 
 
     return TASK2_ACTIONS[action_index]
