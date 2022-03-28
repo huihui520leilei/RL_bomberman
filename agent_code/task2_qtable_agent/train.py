@@ -100,22 +100,25 @@ def game_events_occurred(self, old_game_state: dict, self_action: str, new_game_
 
     if (mode_old == 1) and (mode == 1): # approaching to goal
         if (goal_dist_new < goal_dist_old):
-            reward = reward + 1.0
+            reward = reward + 3.0
         elif (goal_dist_new >= goal_dist_old): # waiting is not good
-            reward = reward - 1.0
+            reward = reward - 3.0
 
     if (mode_old == -1) and (mode == -1): # escaping from goal
         if (goal_dist_new < goal_dist_old): 
-            reward = reward - 1.0
+            reward = reward - 3.0
         elif (goal_dist_new >= goal_dist_old): # also waiting can be good
-            reward = reward + 1.0
+            reward = reward + 3.0
 
     if (e.BOMB_DROPPED in events):
         if (mode_old==1) and (goal_old==0) and (goal_dist_old==1.0):
                 reward += 50.0 # that is a good point to drop a bomb
                 #print("reward for bomb")
         else:
-            reward -= 3.0 # we do not want bombs otherwise
+            reward -= 10.0 # we do not want bombs otherwise
+
+    if (e.BOMB_EXPLODED) and (not e.CRATE_DESTROYED):
+        reward -= 5
 
     if (mode_old == -1) and (e.BOMB_DROPPED in events): #no bombs while escaping
         reward = reward - 5.0
@@ -123,8 +126,8 @@ def game_events_occurred(self, old_game_state: dict, self_action: str, new_game_
     if (e.GOT_KILLED in events):
         reward = reward -50.0
 
-    #if (mode_old==-1) and (goal_old == 0) and (e.CRATE_DESTROYED in events) and not(e.GOT_KILLED in events):
-    #    reward = reward + 10.0 # crate destroyed while 
+    if (mode_old==-1) and (goal_old == 0) and (e.CRATE_DESTROYED in events) and not(e.GOT_KILLED in events):
+        reward = reward + 10.0 # crate destroyed while 
     
     if (mode_old==1) and (self_action=='WAIT'): 
         reward = reward - 2.5 # we do not want to wait if there is no danger
